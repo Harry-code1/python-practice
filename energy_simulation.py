@@ -1,28 +1,24 @@
+import random
+
 def clamp(value, minimum, maximum):
     return max(minimum, min(value, maximum))
 
 
+battery = 50
+BATTERY_MAX = 100
 
-
-
-energy = 50
-MAX_ENERGY = 100
-MIN_ENERGY = 0
-
-for tick in range(1,21):
+for tick in range(1, 21):
     print(f"\nTick {tick}")
 
-    action = input("Charge (c) or Use (u)? ").lower()
+    generator_output = random.randint(5, 15)
+    energy_use = random.randint(6, 12)
 
-    if action == "c":
-        energy += 10
-        print("Charging...")
-    elif action == ("u"):
-        energy -= 15
-        print("Using energy...")
-    else:
-        print("No action taken.")
+    battery += generator_output
+    print(f"Generator produced {generator_output} energy")
 
-    energy = clamp(energy, MIN_ENERGY, MAX_ENERGY)
+    battery -= energy_use
+    print(f"System used {energy_use} energy")
 
-    print(f"Energy level: {energy}")
+    battery = clamp(battery, 0, BATTERY_MAX)
+
+    print(f"Battery level: {battery}")
