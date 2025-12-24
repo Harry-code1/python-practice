@@ -1,61 +1,45 @@
 import random
 
-def rand():
-    rand = random.randint(1,11)
-    return rand
+def draw_card():
+    return random.randint(1, 11)
 
 def blackjack():
-    pwin = False
-    hwin = False
+    player_score = draw_card() + draw_card()
+    house_score = draw_card() + draw_card()
 
-    # Calculates the players starting score with 2 cards
-    playerscore = rand() + rand()
-    print(f"The players current score is {playerscore}")
+    print(f"Player score: {player_score}")
+    print(f"House score: {house_score}")
+    print("---------------------------------------")
 
-    # Calculates the houses starting score with 2 cards
-    housescore = rand() +rand()
-    print(f"The houses current score us {housescore}")
-
-    # Checks if either the house or player has got blackjack
-    if playerscore == 21:
-        pwin = True
-    elif housescore == 21:
-        hwin = True
-
-    # Asks if the player wants to take another card
-    while playerscore < 21 and not pwin and not hwin:
-        phit = input("Would you like to hit? (Y/N) ").upper()
-        print("---------------------------------------")
-        if phit == "Y":
-            playerscore += rand()
-            print("Player is hitting")
-            print(f"Your score is now {playerscore}")
+    # Player turn
+    while player_score < 21:
+        hit = input("Hit? (Y/N): ").upper()
+        if hit == "Y":
+            player_score += draw_card()
+            print(f"Player score: {player_score}")
             print("---------------------------------------")
-            if playerscore > 21:
-                hwin = True
-        elif phit == "N":
+            if player_score > 21:
+                print("Player busts! House wins.")
+                return
+        else:
             break
 
-    # House takes cards until score is above 17
-    while housescore < 17 and not pwin and not hwin:
-        housescore += rand()
-        print(f"House is hitting")
-        print(f"The houses socre is now {housescore}")
+    # House turn
+    while house_score < 17:
+        house_score += draw_card()
+        print(f"House hits. Score: {house_score}")
         print("---------------------------------------")
+        if house_score > 21:
+            print("House busts! Player wins.")
+            return
 
-       # Win statements for the house
-        if housescore >= 17:
-            break
-        if housescore == 21:
-            hwin = True
-        elif housescore > 21 and playerscore < 21:
-            pwin = True
-
-    # Win results to be sent
-    if pwin == True:
-        print(f"The player has won! with {playerscore}")
-    elif hwin == True:
-        print(f"The house has won! with {housescore}")
-
+    # Final result
+    if player_score > house_score:
+        print("Player wins!")
+    elif house_score > player_score:
+        print("House wins!")
+    else:
+        print("It's a tie!")
 
 blackjack()
+
