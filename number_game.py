@@ -1,11 +1,11 @@
 import random
 
 
-def play_game():
-    secret = random.randint(1,10)
+def play_game(a, b):
+    secret = random.randint(a,b)
     attempts = 0
 
-    print("I'm thinking of a number between 1 and 10.")
+    print(f"I'm thinking of a number between {a} and {b}.")
 
     while True:
         guess = input("Your guess: ")
@@ -25,4 +25,14 @@ def play_game():
             print(f"Correct! You guessed it in {attempts} attempts")
             break
 
-play_game()
+
+question = int(input("What level of difficulty do you want to play? 1 - 3: "))
+
+if question == 1:
+    play_game(1,10)
+elif question == 2:
+    play_game(1,50)
+elif question == 3:
+    play_game(1, 100)
+else:
+    print("Difficulty not found.")
