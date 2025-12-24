@@ -6,3 +6,4 @@ Small Python programs I’m writing to practice programming and GitHub.
 - hello.py – prints a simple message
 - number_game.py – a number guessing game
 - unit_converter.py – simple unit conversion tool
+- blackjack.py - blackjack based card game
