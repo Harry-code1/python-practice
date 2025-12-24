@@ -1,14 +1,28 @@
 import random
 
-secret = random.randint(1,10)
-guess = None
 
-while guess != secret:
-    guess = int(input("Guess a number between 1 and 10"))
+def play_game():
+    secret = random.randint(1,10)
+    attempts = 0
 
-    if guess < secret:
-        print("Too low!")
-    elif guess > secret:
-        print("Too high!")
+    print("I'm thinking of a number between 1 and 10.")
 
-print("Correct!")
+    while True:
+        guess = input("Your guess: ")
+
+        if not guess.isdigit():
+            print("Please enter a number.")
+            continue
+
+        guess = int(guess)
+        attempts += 1
+
+        if guess < secret:
+            print("Too low!")
+        elif guess > secret:
+            print("Too high!")
+        else:
+            print(f"Correct! You guessed it in {attempts} attempts")
+            break
+
+play_game()
