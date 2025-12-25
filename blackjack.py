@@ -1,7 +1,20 @@
 import random
+from tkinter.ttk import Label
+
 
 def draw_card():
-    return random.randint(1, 11)
+    # 11 represents an Ace
+    return random.choice([2,3,4,5,6,7,8,9,10,10,10,11])
+
+def calculate_score(cards):
+    score = sum(cards)
+    ace_count = cards.count(11)
+
+    while score > 21 and ace_count > 0:
+        score -= 10
+        ace_count -= 1
+    return score
+
 
 def get_bet(balance):
     while True:
@@ -25,14 +38,14 @@ def blackjack(balance):
     player_cards = [draw_card(), draw_card()]
     house_cards = [draw_card(), draw_card()]
 
-    player_score = sum(player_cards)
-    house_score = sum(house_cards)
+    player_score = calculate_score(player_cards)
+    house_score = calculate_score(house_cards)
 
-    print(f"\nPlayer cards: {player_cards} (Score: {player_score})")
-    print(f"House cards: [{house_cards[0]}, ?]")
+    print(f"\nPlayer cards: {player_cards} (score: {player_score})")
+    print(f"House cards: [{house_cards[0]},?]")
     print("---------------------------------------")
 
-    # Check for player blackjack
+    # Player blackjack
     if player_score == 21:
         winnings = int(bet * 1.5)
         print("Blackjack! You win 3:2 payout!")
@@ -43,7 +56,7 @@ def blackjack(balance):
         hit = input("Hit? (Y/N): ").upper()
         if hit == "Y":
             player_cards.append(draw_card())
-            player_score = sum(player_cards)
+            player_score = calculate_score(player_cards)
             print(f"Player cards: {player_cards} (Score: {player_score})")
             print("---------------------------------------")
             if player_score > 21:
@@ -53,13 +66,14 @@ def blackjack(balance):
             break
 
     # Reveal house cards
+    house_score = calculate_score(house_cards)
     print(f"House cards: {house_cards} (Score: {house_score})")
     print("---------------------------------------")
 
     # House turn
     while house_score < 17:
         house_cards.append(draw_card())
-        house_score = sum(house_cards)
+        house_score = calculate_score(house_cards)
         print(f"House hits: {house_cards} (Score: {house_score})")
         print("---------------------------------------")
         if house_score > 21:
@@ -76,6 +90,7 @@ def blackjack(balance):
     else:
         print("Push! Bet returned.")
         return balance
+
 
 def main():
     balance = 100
@@ -95,5 +110,6 @@ def main():
             break
 
     print("Thanks for playing!")
+
 
 main()
