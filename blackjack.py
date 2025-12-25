@@ -22,19 +22,29 @@ def get_bet(balance):
 def blackjack(balance):
     bet = get_bet(balance)
 
-    player_score = draw_card() + draw_card()
-    house_score = draw_card() + draw_card()
+    player_cards = [draw_card(), draw_card()]
+    house_cards = [draw_card(), draw_card()]
 
-    print(f"Player score: {player_score}")
-    print(f"House score: {house_score}")
+    player_score = sum(player_cards)
+    house_score = sum(house_cards)
+
+    print(f"\nPlayer cards: {player_cards} (Score: {player_score})")
+    print(f"House cards: [{house_cards[0]}, ?]")
     print("---------------------------------------")
+
+    # Check for player blackjack
+    if player_score == 21:
+        winnings = int(bet * 1.5)
+        print("Blackjack! You win 3:2 payout!")
+        return balance + winnings
 
     # Player turn
     while player_score < 21:
         hit = input("Hit? (Y/N): ").upper()
         if hit == "Y":
-            player_score += draw_card()
-            print(f"Player score: {player_score}")
+            player_cards.append(draw_card())
+            player_score = sum(player_cards)
+            print(f"Player cards: {player_cards} (Score: {player_score})")
             print("---------------------------------------")
             if player_score > 21:
                 print("Player busts! House wins.")
@@ -42,10 +52,15 @@ def blackjack(balance):
         else:
             break
 
+    # Reveal house cards
+    print(f"House cards: {house_cards} (Score: {house_score})")
+    print("---------------------------------------")
+
     # House turn
     while house_score < 17:
-        house_score += draw_card()
-        print(f"House hits. Score: {house_score}")
+        house_cards.append(draw_card())
+        house_score = sum(house_cards)
+        print(f"House hits: {house_cards} (Score: {house_score})")
         print("---------------------------------------")
         if house_score > 21:
             print("House busts! Player wins.")
@@ -59,12 +74,11 @@ def blackjack(balance):
         print("House wins!")
         return balance - bet
     else:
-        print("It's a tie!")
+        print("Push! Bet returned.")
         return balance
 
 def main():
     balance = 100
-
     print("Welcome to Blackjack!")
 
     while balance > 0:
@@ -79,8 +93,7 @@ def main():
         again = input("Play again? (Y/N): ").upper()
         if again != "Y":
             break
+
     print("Thanks for playing!")
 
 main()
-
-
